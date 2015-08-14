@@ -1,6 +1,7 @@
 #!/bin/bash
 
 fifoname="netchat-proxy"
+failoverIP="10.13.37.76"
 
 rm $fifoname
 killall simpleperlmultiuserchatserver-no-nicknames
@@ -23,7 +24,7 @@ for m in 21120 21121 21122 21123 ; do
     while true; do
       netcat localhost $m -w 1 > /dev/null 2>&1
       if [[ $? -ne 0 ]]; then
-        netcat 24.107.119.141 $m -w 1 > /dev/null 2>&1
+        netcat $failoverIP $m -w 1 > /dev/null 2>&1
       fi
     done
   } 2>&1 | tee $fifoname &
