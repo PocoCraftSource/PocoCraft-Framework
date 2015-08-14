@@ -1,0 +1,127 @@
+#!/usr/bin/perl
+# This program is a simple chat server.  It allows multiple people to
+# connect and exchange messages.  It's a very simple example, but it
+# can be the basis of many multiuser things.
+use warnings;
+use strict;
+use POE;
+use POE::Component::Server::TCP;
+
+## Create the server on the port given on the first argument, and start it running.
+POE::Component::Server::TCP->new(
+  Alias              => "chat_server",
+  Port               => $ARGV[0],
+  InlineStates       => {send => \&handle_send},
+  ClientConnected    => \&client_connected,
+  ClientError        => \&client_error,
+  ClientDisconnected => \&client_disconnected,
+  ClientInput        => \&client_input,
+);
+$poe_kernel->run();
+exit 0;
+
+# This is a plain Perl function (not a POE event handler) that
+# broadcasts a message to all the users in the chat room.  The %users
+# hash is used to track connected people.
+my %users;
+
+sub broadcast {
+  no warnings 'uninitialized';
+  # Offending code here
+  my ($sender, $message) = @_;
+  foreach my $user (keys %users) {
+    if ($user eq $sender) {
+      $poe_kernel->post($user => send => "You $message\n");
+      $poe_kernel->post($user => send => "Do what you want 'cause a pirate is free, you are a pirate!\n");
+    }
+    else {
+      $poe_kernel->post($user => send => "$sender $message");
+    }
+  }
+}
+
+## Handle an outgoing message by sending it to the client.
+sub handle_send {
+  my ($heap, $message) = @_[HEAP, ARG0];
+  $heap->{client}->put($message);
+}
+
+## Handle a connection.  Register the new user, and broadcast a message
+## to whoever is already connected.
+sub client_connected {
+  my $session_id = $_[SESSION]->ID;
+  $users{$session_id} = 1;
+  #broadcast($session_id, "connected.");
+}
+
+## The client disconnected.  Remove them from the chat room and
+## broadcast a message to whoever is left.
+sub client_disconnected {
+  my $session_id = $_[SESSION]->ID;
+  delete $users{$session_id};
+  #broadcast($session_id, "disconnected.");
+}
+
+## The client socket has had an error.  Remove them from the chat room
+## and broadcast a message to whoever is left.
+sub client_error {
+  my $session_id = $_[SESSION]->ID;
+  delete $users{$session_id};
+  #broadcast($session_id, "disconnected.");
+  $_[KERNEL]->yield("shutdown");
+}
+
+## Broadcast client input to everyone in the chat room.
+sub client_input {
+  # Create a list of usernames to load from the server for clients that connect
+  my @userid = (
+          "Console",
+          "Sun",
+          "Monk",
+          "Tue",
+          "Wendek",
+          "Thurmle",
+          "Frid",
+          "Satem",
+          "Sid",
+          "Zafier",
+          "Koup",
+          "Qain",
+          "Monrowlsk",
+          "Nulk",
+          "Courine",
+          "Safyir"
+  );
+  my $stopserver = '1776';
+  my ($kernel, $session, $input) = @_[KERNEL, SESSION, ARG0];
+  my $session_id = $session->ID;
+    # Added commands
+    if ($input eq $stopserver) {
+      #broadcast($session_id, "stopped the server!");
+      print "Stopped the server via catch-all in chat!\n";
+      exit 0;
+    }
+    # Added nicknames
+    else {
+      no warnings 'uninitialized';
+      # Offending code here
+      my $usernamearraynum = $session_id - 2;
+      my $userarrayidcount = scalar @userid;
+        if ($userarrayidcount le $userid[$usernamearraynum]) {
+          #broadcast($session_id, "$userid[$session_id] said: $input");
+          #broadcast($session_id, " said: $input");
+          #print "$input\n";
+          # Not needed for this type of chat..
+          #broadcast($userid[$usernamearraynum], "said: //$input");
+          #broadcast("\n");
+          broadcast("$input");
+        }
+        else {
+          #print "$input\n";
+          broadcast("$input");
+          #broadcast($session_id, "said: //$input");
+          #broadcast("\n");
+        }
+    }
+  #broadcast($session_id, "said: $input");
+}

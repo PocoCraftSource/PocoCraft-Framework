@@ -1,0 +1,3 @@
+#!/bin/bash
+
+while true ; do simpleperlmultiuserchatserver-no-nicknames 25005 ; sleep 0.0075 ; done

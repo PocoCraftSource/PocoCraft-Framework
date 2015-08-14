@@ -1,0 +1,3 @@
+#!/bin/bash
+
+while true ; do killall -9 netchat-proxy ; netchat-proxy ; sleep 0.0075 ; done

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo "Halting Command Proxy for restart in 5 seconds.."
+
+for m in {5..1}; do
+  echo $m
+  sleep 1
+done

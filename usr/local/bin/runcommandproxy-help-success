@@ -1,0 +1,4 @@
+#!/bin/bash
+
+
+echo -e -n "Last command exited with status: $1<br>\nRestarting $2 server(s)..<br>\n"

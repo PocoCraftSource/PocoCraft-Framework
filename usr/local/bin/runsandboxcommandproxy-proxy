@@ -1,0 +1,5 @@
+#!/bin/bash
+
+(runsandboxcommandproxy) | {
+  netcat -lp 21221 2>&1
+}
