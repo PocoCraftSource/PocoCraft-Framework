@@ -22,27 +22,23 @@ if test `id -u` -eq 0; then
     exit 1
 fi
 
-fifoname="netchat-proxy"
+fifoname="vlc-netchat-proxy"
 failoverIP="10.13.37.76"
 
 rm $fifoname
+killall simpleperlmultiuserchatserver-no-nicknames-loop-vlc
 killall simpleperlmultiuserchatserver-no-nicknames
-killall simpleperlmultiuserchatserver-no-nicknames-loop
 killall runcommandproxy-loop
 killall runcommandproxy
-killall runsandboxcommandproxy-loop
-killall runsandboxcommandproxy
-killall runfivenightscommandproxy-loop
-killall runfivenightscommandproxy
-for m in {0..15} ; do killall netchat ; done
+killall netcat
 
 mkfifo $fifoname
 
 simpleperlmultiuserchatserver-no-nicknames-loop &
 runcommandproxy-loop &
 
-for m in 21120 21121 21122 21123 ; do
-  while true ; do netcat localhost 25005 ; done < $fifoname | {
+for m in 31120 31121 31122 ; do
+  while true ; do netcat localhost 35005 ; done < $fifoname | {
     while true; do
       netcat localhost $m -w 1 > /dev/null 2>&1
       if [[ $? -ne 0 ]]; then
@@ -51,5 +47,5 @@ for m in 21120 21121 21122 21123 ; do
     done
   } 2>&1 | tee $fifoname &
 done
-sleep 5 ; while true ; do while true ; do echo ; sleep 0.05 ; done | netcat localhost 25005 ; done &
+sleep 5 ; while true ; do while true ; do echo ; sleep 0.05 ; done | netcat localhost 35005 ; done &
 while true ; do echo -n ; done

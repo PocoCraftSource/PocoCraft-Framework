@@ -1,0 +1,5 @@
+#!/bin/bash
+
+(killall runvlccommandproxy ; runvlccommandproxy) | {
+    netcat localhost 8181
+} #| netcat localhost 35005

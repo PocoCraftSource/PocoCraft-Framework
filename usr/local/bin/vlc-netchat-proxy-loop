@@ -22,4 +22,4 @@ if test `id -u` -eq 0; then
     exit 1
 fi
 
-while true ; do runfivenightscommandproxy ; sleep 0.0075 ; done
+while true ; do killall -9 vlc-netchat-proxy ; vlc-netchat-proxy ; sleep 0.0075 ; done

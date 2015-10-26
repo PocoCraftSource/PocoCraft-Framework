@@ -22,10 +22,9 @@ if test `id -u` -eq 0; then
     exit 1
 fi
 
-workingdir="/home/srcds/bin/"
-secretcode="dbb"
-serverid="PocoCraft-RCON-Control-Sandbox"
-pococraftrconport="21121"
+workingdir="/home/vlcstream/"
+serverid="PocoCraft-RCON-Control-VLC"
+pococraftrconport="31121"
 pococraftrconpidsuffix="$serverid-$pococraftrconport"
 serverfifonum="$serverid"
 
@@ -35,7 +34,7 @@ mkfifo $serverfifonum > /dev/null 2>&1
   while true ; do
     read inputparams
     if [[ -n "$inputparams" ]]; then
-      echo "$inputparams" | sed 's/^.*: \/\///' | sed 's/sandbox//'
+      echo "$inputparams" | sed 's/^.*: \/\///' | sed 's/vlc//'
       inputparams=""
     elif [[ $inputparams == "" ]]; then
       echo -n ""

@@ -1,6 +1,6 @@
-# PocoCraft-Framework
+# PocoCraft-Framework-VLC-Port
 The PocoCraft framework, designed for you to manage any CLI-enabled server you have, remotely!
 
-This framework has some modules that can be used on your VALVe SrcDS servers.
+This framework has been modified to work with VLC media player and its features.
 
-I am going to periodically update the code and add more examples, so that people can understand how to implement this into their own application or use scenario(s).
+Some of the original PocoCraft Framework features have been stripped or modified to work for the ported version's purpose..
