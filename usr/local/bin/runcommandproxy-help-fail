@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo -e -n "Last command exited with status: $1\nRestarting the $2 server has failed..\nThis may be because the server is not running.\n"
+echo -e -n "Last command exited with status: $1<br>\nRestarting the $2 server has failed..<br>\nThis may be because the server is not running.<br>\n"

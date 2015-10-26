@@ -1,3 +1,0 @@
-#!/bin/bash
-
-echo -e -n "PocoCraft Command Interpreter Proxy help\nPlease refer to this if the old commands are no longer functional..\nServer commands MUST be surrounded with the '/' character in order to be ran.\nThe help command is the ONLY one that begins with ONE '/' and no trailing slash.\nRestart VLC: restartvlc\nRestart Command Proxy: restartcommandproxy\nEnd of help manual\n"

@@ -22,4 +22,6 @@ if test `id -u` -eq 0; then
     exit 1
 fi
 
-while true ; do runcommandproxy ; sleep 0.0075 ; done
+(runsandboxcommandproxy) | {
+  netcat -lp 21221 2>&1
+}

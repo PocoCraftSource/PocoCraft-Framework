@@ -22,4 +22,25 @@ if test `id -u` -eq 0; then
     exit 1
 fi
 
-while true ; do runcommandproxy ; sleep 0.0075 ; done
+workingdir="/home/srcds/bin/"
+secretcode="54d98"
+serverid="PocoCraft-RCON-Control-FiveNights"
+pococraftrconport="21122"
+pococraftrconpidsuffix="$serverid-$pococraftrconport"
+serverfifonum="$serverid"
+
+mkfifo $serverfifonum > /dev/null 2>&1
+
+(while true ; do netcat -lp $pococraftrconport ; done < $serverfifonum) | {
+  while true ; do
+    read inputparams
+    if [[ -n "$inputparams" ]]; then
+      echo "$inputparams" | sed 's/^.*: \/\///' | sed 's/fivenights//'
+      inputparams=""
+    elif [[ $inputparams == "" ]]; then
+      echo -n ""
+    else
+      echo -n ""
+    fi
+  done
+} 2>&1 | tee $serverfifonum

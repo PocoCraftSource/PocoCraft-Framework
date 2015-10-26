@@ -22,4 +22,4 @@ if test `id -u` -eq 0; then
     exit 1
 fi
 
-while true ; do runvlccommandproxy ; sleep 0.0075 ; done
+while true ; do runsandboxcommandproxy ; sleep 0.0075 ; done
